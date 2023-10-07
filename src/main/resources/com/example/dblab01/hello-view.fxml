@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dblab01.HelloController">
+   <children>
+      <MenuBar prefHeight="27.0" prefWidth="1000.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="menuOpenBtn" mnemonicParsing="false" text="Open" />
+              <MenuItem fx:id="menuCloseBtn" mnemonicParsing="false" onAction="#closeApp" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Backup">
+            <items>
+              <MenuItem fx:id="menuCreateBackup" mnemonicParsing="false" text="Create Backup" />
+                  <MenuItem fx:id="menuOpenBackup" mnemonicParsing="false" text="Open Backup" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TabPane layoutY="27.0" prefHeight="673.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
+        <tabs>
+          <Tab fx:id="studentLbl" text="Students">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.571418598742788" layoutX="400.0" layoutY="256.0" prefHeight="672.0000222911012" prefWidth="1000.0695983909806" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="675.0">
+                                 <children>
+                                    <TableView fx:id="studentsTbl" layoutX="209.0" layoutY="153.0" prefHeight="670.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="0.0">
+                                      <columns>
+                                        <TableColumn fx:id="studentsId" prefWidth="50.0" text="id" />
+                                        <TableColumn fx:id="studentsName" prefWidth="157.77384567260742" text="name" />
+                                          <TableColumn fx:id="studentsSurname" prefWidth="171.96524047851562" text="surname" />
+                                          <TableColumn fx:id="studentsPatronymic" prefWidth="171.96517944335938" text="patronymic" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <ScrollBar layoutX="551.0" orientation="VERTICAL" prefHeight="644.0" prefWidth="18.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="308.0">
+                                 <children>
+                                    <GridPane layoutX="17.0" layoutY="23.0" prefHeight="84.0" prefWidth="416.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.00875523356285" minWidth="10.0" prefWidth="196.33919956950035" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.89559605387535" minWidth="10.0" prefWidth="198.00863316325035" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="name" />
+                                          <Label text="surname" GridPane.rowIndex="1" />
+                                          <Label text="patronymic" GridPane.rowIndex="2" />
+                                          <Label text="Label" GridPane.columnIndex="1" />
+                                          <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                       </children>
+                                    </GridPane>
+                                    <ButtonBar layoutX="138.0" layoutY="197.0" prefHeight="40.0" prefWidth="150.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="120.0">
+                                      <buttons>
+                                        <Button fx:id="newStudentBtn" mnemonicParsing="false" onAction="#newBtnClick" text="New" />
+                                          <Button fx:id="editStudentBtn" mnemonicParsing="false" onAction="#editBtnClick" text="Edit" />
+                                          <Button fx:id="deleteStudentBtn" mnemonicParsing="false" onAction="#delBtnClick" text="Delete" />
+                                      </buttons>
+                                    </ButtonBar>
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab fx:id="variantsLbl" text="Variants">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.571418598742788" layoutX="400.0" layoutY="256.0" prefHeight="672.0000222911012" prefWidth="1000.0695983909806" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <items>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="675.0">
+                                 <children>
+                                    <TableView fx:id="variantsTbl" layoutX="209.0" layoutY="153.0" prefHeight="670.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="0.0">
+                                       <columns>
+                                          <TableColumn prefWidth="50.0" text="id" />
+                                          <TableColumn prefWidth="504.57393140335" text="path_to_file" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <ScrollBar layoutX="551.0" orientation="VERTICAL" prefHeight="669.0" prefWidth="17.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="308.0">
+                                 <children>
+                                    <GridPane prefHeight="28.0" prefWidth="416.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.00875523356285" minWidth="10.0" prefWidth="196.33919956950035" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.89559605387535" minWidth="10.0" prefWidth="198.00863316325035" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label text="path_to_file" />
+                                          <Label text="Label" GridPane.columnIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                    <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="120.0">
+                                       <buttons>
+                                          <Button fx:id="newVarBtn" mnemonicParsing="false" onAction="#newBtnClick" text="New" />
+                                          <Button fx:id="editVarBtn" mnemonicParsing="false" onAction="#editBtnClick" text="Edit" />
+                                          <Button fx:id="deleteVarBtn" mnemonicParsing="false" onAction="#delBtnClick" text="Delete" />
+                                       </buttons>
+                                    </ButtonBar>
+                                 </children>
+                              </AnchorPane>
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="testLbl" text="Testing table">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.571418598742788" layoutX="400.0" layoutY="256.0" prefHeight="672.0000222911012" prefWidth="1000.0695983909806" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <items>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="675.0">
+                                 <children>
+                                    <TableView layoutX="209.0" layoutY="153.0" prefHeight="670.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="0.0">
+                                       <columns>
+                                          <TableColumn prefWidth="280.48694974184036" text="student_id" />
+                                          <TableColumn prefWidth="267.1304016113281" text="variant_id" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <ScrollBar layoutX="551.0" orientation="VERTICAL" prefHeight="669.0" prefWidth="17.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="308.0" />
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="marksLbl" text="Marks">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.571418598742788" layoutX="400.0" layoutY="256.0" prefHeight="672.0000222911012" prefWidth="1000.0695983909806" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <items>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="675.0">
+                                 <children>
+                                    <TableView layoutX="209.0" layoutY="153.0" prefHeight="670.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="0.0">
+                                       <columns>
+                                          <TableColumn prefWidth="244.591350376606" text="full_name" />
+                                          <TableColumn prefWidth="249.59994506835938" text="path_to_file" />
+                                          <TableColumn prefWidth="50.0" text="mark" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <ScrollBar layoutX="551.0" orientation="VERTICAL" prefHeight="669.0" prefWidth="17.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="670.0" prefWidth="308.0">
+                                 <children>
+                                    <GridPane prefHeight="28.0" prefWidth="416.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.00875523356285" minWidth="10.0" prefWidth="196.33919956950035" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.89559605387535" minWidth="10.0" prefWidth="198.00863316325035" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label text="Mark" />
+                                          <Label text="Label" GridPane.columnIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                    <ButtonBar prefHeight="40.0" prefWidth="150.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="120.0">
+                                       <buttons>
+                                          <Button fx:id="newMarkBtn" mnemonicParsing="false" onAction="#newBtnClick" text="New" />
+                                          <Button fx:id="editMarkBtn" mnemonicParsing="false" onAction="#editBtnClick" text="Edit" />
+                                          <Button fx:id="deleteMarkBtn" mnemonicParsing="false" onAction="#delBtnClick" text="Delete" />
+                                       </buttons>
+                                    </ButtonBar>
+                                 </children>
+                              </AnchorPane>
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
