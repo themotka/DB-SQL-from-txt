@@ -10,7 +10,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
-    private static ObservableList<Students> studentData = FXCollections.observableArrayList();
+    static ObservableList<Students> studentData = FXCollections.observableArrayList();
+    static ObservableList<Variants> varData = FXCollections.observableArrayList();
+
+    static ObservableList<Testing> testData = FXCollections.observableArrayList();
+
+    static ObservableList<Marks> markData = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -23,7 +28,12 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        studentData.add(new Students("Hans", "Muster", "Andreevich"));
+        for (int i = 0; i < 50; i++) {
+            studentData.add(new Students(i,"Михайлэнко", "Данило", "Мыколович"));
+        }
+        for (int i = 0; i < 5; i++) {
+            varData.add(new Variants(i,"C:\\Windows\\System3" + i));
+        }
         launch();
     }
 }
