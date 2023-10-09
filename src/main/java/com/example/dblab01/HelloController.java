@@ -1,6 +1,8 @@
 package com.example.dblab01;
 
+import java.io.*;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +18,8 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
 public class HelloController {
+    @FXML
+    private TabPane tab;
     @FXML
     private Tab markLbl;
     @FXML
@@ -111,7 +115,55 @@ public class HelloController {
     }
     @FXML
     void openExisting(ActionEvent event) {
+        switch (tab.getSelectionModel().getSelectedIndex()){
+            case 0: openStudent();
+                break;
+            case 1: openVariant();
+                break;
+            default: IncorrectData("Choose 'Students' or 'Variants' tab");
+                break;
+        }
+    }
+    void openVariant() {
+        JFileChooser fileopen = new JFileChooser();
+        fileopen.setCurrentDirectory(new File("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\backups"));
+        int ret = fileopen.showDialog(null, "Open variants");
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            File file = fileopen.getSelectedFile();
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+                String line = reader.readLine();
+                varData.clear();
+                while (line != null) {
+                    String[] s = line.split(";");
+                    System.out.println(Arrays.toString(s));
+                    varData.add(new Variants(Integer.parseInt(s[0]), s[1]));
+                    line = reader.readLine();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
+    void openStudent(){
+        JFileChooser fileopen = new JFileChooser();
+        fileopen.setCurrentDirectory(new File("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\backups"));
+        int ret = fileopen.showDialog(null, "Open students");
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            File file = fileopen.getSelectedFile();
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+                String line = reader.readLine();
+                studentData.clear();
+                while (line != null) {
+                    String[] s = line.split(";");
+                    System.out.println(Arrays.toString(s));
+                    studentData.add(new Students(Integer.parseInt(s[0]), s[1], s[2], s[3]));
+                    line = reader.readLine();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
     @FXML
     void save(ActionEvent event) {
@@ -131,9 +183,30 @@ public class HelloController {
     void varTab(ActionEvent event) {
 
     }
+    private boolean uniqueId(Integer id) {
+        for (Students s:
+                studentData) {
+            if (s.getId() == id){
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean uniqueIdVar(Integer id) {
+        for (Variants s:
+                varData) {
+            if (s.getId() == id){
+                return false;
+            }
+        }
+        return true;
+    }
     void IncorrectData(String string){
         JFrame jFrame = new JFrame();
         JOptionPane.showMessageDialog(jFrame, string, "Error", ERROR_MESSAGE);
+    }
+    public void delete(TableView table, int index){
+        if(index >= 0) table.getItems().remove(index);
     }
     @FXML
     void delStBtnClick(ActionEvent event) {
@@ -146,9 +219,6 @@ public class HelloController {
         int row = variantsTbl.getSelectionModel().getSelectedIndex();
         delete(variantsTbl, row);
     }
-    public void delete(TableView table, int index){
-       if(index >= 0) table.getItems().remove(index);
-    }
 
     @FXML
     void newStBtnClick(ActionEvent event) {
@@ -156,31 +226,46 @@ public class HelloController {
         String name = fieldNameStudents.getText();
         String surname = fieldSurnameStudents.getText();
         String patronymic = fieldPatronymicStudents.getText();
-        studentData.add(new Students(
-                id,
-                name,
-                surname,
-                patronymic));
-        fieldIdStudents.clear();
-        fieldNameStudents.clear();
-        fieldSurnameStudents.clear();
-        fieldPatronymicStudents.clear();
-        fieldIdStudents.requestFocus();
+        if (studentData.contains(new Students(id, name, surname, patronymic))){ IncorrectData("Student already in database");}
+        else if (!uniqueId(id)){ IncorrectData("ID already in database");}
+        else {
+            System.out.println(id+ name+ surname+ patronymic);
+            studentData.add(new Students(
+                    id,
+                    name,
+                    surname,
+                    patronymic));
+            fieldIdStudents.clear();
+            fieldNameStudents.clear();
+            fieldSurnameStudents.clear();
+            fieldPatronymicStudents.clear();
+            fieldIdStudents.requestFocus();
+        }
     }
+
+
     @FXML
     void newVarBtnClick(ActionEvent event) {
-        varData.add(new Variants(
-                Integer.parseInt(fieldIdVar.getText()),
-                fieldPathVar.getText()));
-        fieldIdVar.clear();
-        fieldPathVar.clear();
-        fieldIdVar.requestFocus();
+        int id = Integer.parseInt(fieldIdVar.getText());
+        String path = fieldPathVar.getText();
+        if (varData.contains(new Variants(id, path))){ IncorrectData("Path already in database");}
+        else if (!uniqueIdVar(id)){IncorrectData("ID already in database");}
+        else {
+            varData.add(new Variants(
+                    id,
+                    path));
+            fieldIdVar.clear();
+            fieldPathVar.clear();
+            fieldIdVar.requestFocus();
+        }
     }
     @FXML
     void generateMarks(){
+        markData.clear();
+        testData.clear();
         for (Students studentDatum : studentData) {
             int var = (int) (Math.random() * (varData.size()));
-            testData.add(new Testing(studentDatum.getId(), var));
+            testData.add(new Testing(studentDatum.getId(), varData.get(var).getId()));
             markData.add(new Marks(studentDatum.getName()+" "+studentDatum.getSurname()+" "+studentDatum.getPatronymic(),
                     varData.get(var).getName(), ""));
         }

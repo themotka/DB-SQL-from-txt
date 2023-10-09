@@ -24,9 +24,9 @@ public class Students {
         Students ticket = (Students) other;
 
         // Если значения полей совпадают, значит объекты равны
-        return name.equals(ticket.name)
-                && surname.equals(ticket.surname)
-                && patronymic.equals(ticket.patronymic);
+        return name.get().equals(ticket.getName())
+                && surname.get().equals(ticket.getSurname())
+                && patronymic.get().equals(ticket.getSurname());
     }
 
     public IntegerProperty idProperty() {return id;}

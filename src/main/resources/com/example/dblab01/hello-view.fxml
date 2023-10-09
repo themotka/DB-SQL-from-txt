@@ -31,7 +31,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TabPane layoutY="27.0" prefHeight="673.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
+      <TabPane fx:id="tab" layoutY="27.0" prefHeight="673.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
         <tabs>
           <Tab fx:id="studentLbl" text="Students">
             <content>
@@ -48,10 +48,10 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <ButtonBar layoutX="420.0" layoutY="595.0" prefHeight="40.0" prefWidth="171.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="409.0">
+                        <ButtonBar layoutX="14.0" layoutY="601.0" prefHeight="40.0" prefWidth="142.0" AnchorPane.bottomAnchor="4.2174113801843305" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="844.0">
                            <buttons>
-                              <Button fx:id="newStudentBtn" mnemonicParsing="false" onAction="#newStBtnClick" text="Add" />
-                              <Button fx:id="deleteStudentBtn" mnemonicParsing="false" onAction="#delStBtnClick" text="Delete" />
+                              <Button fx:id="newStudentBtn" mnemonicParsing="false" onAction="#newStBtnClick" text="Add row" />
+                              <Button fx:id="deleteStudentBtn" mnemonicParsing="false" onAction="#delStBtnClick" text="Delete row" />
                            </buttons>
                         </ButtonBar>
                         <HBox alignment="CENTER" layoutY="574.5739135742188" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -79,10 +79,10 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="309.0" AnchorPane.rightAnchor="410.0">
+                        <ButtonBar layoutX="14.0" layoutY="601.0" prefHeight="40.0" prefWidth="141.0" AnchorPane.bottomAnchor="4.2174113801843305" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="845.0">
                            <buttons>
-                              <Button fx:id="newVarBtn" mnemonicParsing="false" onAction="#newVarBtnClick" text="Add" />
-                              <Button fx:id="deleteVarBtn" mnemonicParsing="false" onAction="#delVarBtnClick" text="Delete" />
+                              <Button fx:id="newVarBtn" mnemonicParsing="false" onAction="#newVarBtnClick" text="Add row" />
+                              <Button fx:id="deleteVarBtn" mnemonicParsing="false" onAction="#delVarBtnClick" text="Delete row" />
                            </buttons>
                         </ButtonBar>
                         <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
