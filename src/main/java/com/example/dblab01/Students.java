@@ -17,6 +17,18 @@ public class Students {
 
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        Students ticket = (Students) other;
+
+        // Если значения полей совпадают, значит объекты равны
+        return name.equals(ticket.name)
+                && surname.equals(ticket.surname)
+                && patronymic.equals(ticket.patronymic);
+    }
+
     public IntegerProperty idProperty() {return id;}
     public void setId(int id) {this.id.set(id);}
     public int getId() {return id.get();}

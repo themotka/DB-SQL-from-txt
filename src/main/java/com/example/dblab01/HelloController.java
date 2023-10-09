@@ -10,7 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 
+import javax.swing.*;
 import static com.example.dblab01.HelloApplication.*;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
 public class HelloController {
     @FXML
@@ -128,8 +131,13 @@ public class HelloController {
     void varTab(ActionEvent event) {
 
     }
+    void IncorrectData(String string){
+        JFrame jFrame = new JFrame();
+        JOptionPane.showMessageDialog(jFrame, string, "Error", ERROR_MESSAGE);
+    }
     @FXML
     void delStBtnClick(ActionEvent event) {
+//        IncorrectData("aboba");
         int row = studentsTbl.getSelectionModel().getSelectedIndex();
         delete(studentsTbl, row);
     }
@@ -144,11 +152,15 @@ public class HelloController {
 
     @FXML
     void newStBtnClick(ActionEvent event) {
+        int id = Integer.parseInt(fieldIdStudents.getText());
+        String name = fieldNameStudents.getText();
+        String surname = fieldSurnameStudents.getText();
+        String patronymic = fieldPatronymicStudents.getText();
         studentData.add(new Students(
-                Integer.parseInt(fieldIdStudents.getText()),
-                fieldNameStudents.getText(),
-                fieldSurnameStudents.getText(),
-                fieldPatronymicStudents.getText()));
+                id,
+                name,
+                surname,
+                patronymic));
         fieldIdStudents.clear();
         fieldNameStudents.clear();
         fieldSurnameStudents.clear();
@@ -185,7 +197,7 @@ public class HelloController {
         testTbl.setItems(testData);
     }
     void initializeMarks(){
-//        marksTbl.setEditable(true);
+        marksTbl.setEditable(true);
         markName.setCellValueFactory(data -> data.getValue().nameProperty());
         markName.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -195,15 +207,15 @@ public class HelloController {
 
         markField.setCellValueFactory(data -> data.getValue().markProperty());
         markField.setCellFactory(TextFieldTableCell.forTableColumn());
-//        markField.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Marks, String>>() {
-//            @Override
-//            public void handle(TableColumn.CellEditEvent<Marks, String> studentsStringCellEditEvent) {
-//                Marks marks  = studentsStringCellEditEvent.getRowValue();
-//                marks.setMark(studentsStringCellEditEvent.getNewValue());
-//            }
-//        });
+        markField.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Marks, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Marks, String> studentsStringCellEditEvent) {
+                Marks marks  = studentsStringCellEditEvent.getRowValue();
+                marks.setMark(studentsStringCellEditEvent.getNewValue());
+            }
+        });
 
-        studentsTbl.setItems(studentData);
+        marksTbl.setItems(markData);
     }
 
     void initializeStudents(){
