@@ -2,7 +2,11 @@ package com.example.dblab01;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -126,7 +130,7 @@ public class HelloController {
     }
     void openVariant() {
         JFileChooser fileopen = new JFileChooser();
-        fileopen.setCurrentDirectory(new File("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\backups"));
+        fileopen.setCurrentDirectory(new File("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\results"));
         int ret = fileopen.showDialog(null, "Open variants");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileopen.getSelectedFile();
@@ -147,7 +151,7 @@ public class HelloController {
 
     void openStudent(){
         JFileChooser fileopen = new JFileChooser();
-        fileopen.setCurrentDirectory(new File("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\backups"));
+        fileopen.setCurrentDirectory(new File("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\results"));
         int ret = fileopen.showDialog(null, "Open students");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileopen.getSelectedFile();
@@ -166,8 +170,49 @@ public class HelloController {
         }
     }
     @FXML
-    void save(ActionEvent event) {
-
+    void save(ActionEvent event) throws IOException {//отдельно писать варианты
+        if (markData.isEmpty()){
+            IncorrectData("Generate marks for backup");
+        }
+        else {
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH-mm-ss");
+            Date date = new Date(System.currentTimeMillis());
+            String dateS = formatter.format(date);
+            File outputFileName = Files.createFile(Path.of("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\backups\\"+dateS+".txt")).toFile();
+            try (BufferedWriter writter = new BufferedWriter(new FileWriter(outputFileName))) {
+                for (int i = 0; i < markData.size(); i++) {
+                    String name = markData.get(i).getName().replace(" ", ";");
+                    writter.write(testData.get(i).getStudentId()+";"+name+";"+testData.get(i).getVarId()+";"+markData.get(i).getPath()+";"+markData.get(i).getMark()+"\n");
+                }
+            }
+        }
+    }
+    @FXML
+    void openBackup(ActionEvent event){
+        JFileChooser fileopen = new JFileChooser();
+        fileopen.setCurrentDirectory(new File("D:\\Programming\\Projects\\IDEAProjects\\DBlab01\\src\\main\\resources\\com\\example\\dblab01\\backups"));
+        int ret = fileopen.showDialog(null, "Open backup");
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            File file = fileopen.getSelectedFile();
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+                String line = reader.readLine();
+                studentData.clear();
+                markData.clear();
+                testData.clear();
+                varData.clear();
+                while (line != null) {
+                    String[] s = line.split(";");
+                    System.out.println(Arrays.toString(s));
+                    studentData.add(new Students(Integer.parseInt(s[0]), s[1], s[2], s[3]));
+                    varData.add(new Variants(Integer.parseInt(s[4]), s[5]));
+                    testData.add(new Testing(Integer.parseInt(s[0]),Integer.parseInt(s[4])));
+                    markData.add(new Marks( s[1]+" "+s[2]+" "+s[3],s[5], ""));
+                    line = reader.readLine();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
     @FXML
     void stuTab(ActionEvent event) {
@@ -205,7 +250,7 @@ public class HelloController {
         JFrame jFrame = new JFrame();
         JOptionPane.showMessageDialog(jFrame, string, "Error", ERROR_MESSAGE);
     }
-    public void delete(TableView table, int index){
+    public void delete(TableView<?> table, int index){
         if(index >= 0) table.getItems().remove(index);
     }
     @FXML
@@ -283,9 +328,11 @@ public class HelloController {
     }
     void initializeMarks(){
         marksTbl.setEditable(true);
+        markName.setEditable(false);
+        markPath.setEditable(false);
+
         markName.setCellValueFactory(data -> data.getValue().nameProperty());
         markName.setCellFactory(TextFieldTableCell.forTableColumn());
-
 
         markPath.setCellValueFactory(data -> data.getValue().pathProperty());
         markPath.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -296,6 +343,7 @@ public class HelloController {
             @Override
             public void handle(TableColumn.CellEditEvent<Marks, String> studentsStringCellEditEvent) {
                 Marks marks  = studentsStringCellEditEvent.getRowValue();
+                System.out.println(studentsStringCellEditEvent.getNewValue());
                 marks.setMark(studentsStringCellEditEvent.getNewValue());
             }
         });
@@ -305,16 +353,11 @@ public class HelloController {
 
     void initializeStudents(){
         studentsTbl.setEditable(true);
+        studentsId.setEditable(false);
 
         studentsId.setCellValueFactory(data -> data.getValue().idProperty().asObject());
         studentsId.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        studentsId.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Students, Integer>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<Students, Integer> studentsStringCellEditEvent) {
-                Students student  = studentsStringCellEditEvent.getRowValue();
-                student.setId(studentsStringCellEditEvent.getNewValue());
-            }
-        });
+
 
         studentsName.setCellValueFactory(data -> data.getValue().nameProperty());
         studentsName.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -322,7 +365,18 @@ public class HelloController {
             @Override
             public void handle(TableColumn.CellEditEvent<Students, String> studentsStringCellEditEvent) {
                 Students student  = studentsStringCellEditEvent.getRowValue();
-                student.setName(studentsStringCellEditEvent.getNewValue());
+                String newName = studentsStringCellEditEvent.getNewValue();
+                String oldName = student.getName();
+                if (studentData.contains(new Students(
+                        student.getId(),
+                        newName, student.getSurname(),
+                        student.getPatronymic()
+                ))){
+                    IncorrectData("Student already in database");
+                    student.setName(newName);
+                    student.setName(oldName);
+                }else student.setName(newName);
+
             }
         });
 
@@ -332,7 +386,18 @@ public class HelloController {
             @Override
             public void handle(TableColumn.CellEditEvent<Students, String> studentsStringCellEditEvent) {
                 Students student  = studentsStringCellEditEvent.getRowValue();
-                student.setSurname(studentsStringCellEditEvent.getNewValue());
+                String newSurname = studentsStringCellEditEvent.getNewValue();
+                String oldSurname = student.getSurname();
+                if (studentData.contains(new Students(
+                        student.getId(),
+                        student.getName(),
+                        newSurname,
+                        student.getPatronymic()
+                ))){
+                    IncorrectData("Student already in database");
+                    student.setSurname(newSurname);
+                    student.setSurname(oldSurname);
+                }else student.setSurname(newSurname);
             }
         });
 
@@ -342,7 +407,18 @@ public class HelloController {
             @Override
             public void handle(TableColumn.CellEditEvent<Students, String> studentsStringCellEditEvent) {
                 Students student  = studentsStringCellEditEvent.getRowValue();
-                student.setPatronymic(studentsStringCellEditEvent.getNewValue());
+                String newPatronymic = studentsStringCellEditEvent.getNewValue();
+                String oldPatronymic = student.getPatronymic();
+                if (studentData.contains(new Students(
+                        student.getId(),
+                        student.getName(),
+                        student.getSurname(),
+                        newPatronymic
+                ))){
+                    IncorrectData("Student already in database");
+                    student.setPatronymic(newPatronymic);
+                    student.setPatronymic(oldPatronymic);
+                }else student.setPatronymic(newPatronymic);
             }
         });
 
@@ -350,16 +426,10 @@ public class HelloController {
     }
     void initializeVars(){
         variantsTbl.setEditable(true);
+        varId.setEditable(false);
 
         varId.setCellValueFactory(data -> data.getValue().idProperty().asObject());
         varId.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        varId.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Variants, Integer>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<Variants, Integer> studentsStringCellEditEvent) {
-                Variants var  = studentsStringCellEditEvent.getRowValue();
-                var.setId(studentsStringCellEditEvent.getNewValue());
-            }
-        });
 
         pathId.setCellValueFactory(data -> data.getValue().nameProperty());
         pathId.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -367,7 +437,13 @@ public class HelloController {
             @Override
             public void handle(TableColumn.CellEditEvent<Variants, String> studentsStringCellEditEvent) {
                 Variants var  = studentsStringCellEditEvent.getRowValue();
-                var.setName(studentsStringCellEditEvent.getNewValue());
+                String newVar = studentsStringCellEditEvent.getNewValue();
+                String oldVar = var.getName();
+                if (varData.contains(new Variants(var.getId(), newVar))){
+                    IncorrectData("Variant already in database");
+                    var.setName(newVar);
+                    var.setName(oldVar);
+                }else var.setName(newVar);
             }
         });
 

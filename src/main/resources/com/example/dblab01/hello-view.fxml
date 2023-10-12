@@ -26,7 +26,7 @@
           <Menu mnemonicParsing="false" text="Backup">
             <items>
               <MenuItem fx:id="menuCreateBackup" mnemonicParsing="false" onAction="#save" text="Create Backup" />
-                  <MenuItem fx:id="menuOpenBackup" mnemonicParsing="false" text="Open Backup" />
+                  <MenuItem fx:id="menuOpenBackup" mnemonicParsing="false" onAction="#openBackup" text="Open Backup" />
             </items>
           </Menu>
         </menus>
